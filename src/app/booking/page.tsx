@@ -85,9 +85,9 @@ export default function BookingPage() {
                   sx={{
                     mt: 2,
                     py: 1.5,
-                    backgroundColor: '#667eea',
+                    backgroundColor: '#161616',
                     '&:hover': {
-                      backgroundColor: '#5a67d8',
+                      backgroundColor: '#262626',
                     },
                   }}
                 >

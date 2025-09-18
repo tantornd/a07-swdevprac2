@@ -1,11 +1,37 @@
+'use client';
+
+import { useState } from 'react';
 import Image from 'next/image';
+import { useRouter } from 'next/navigation';
 
 export default function Banner() {
+  const router = useRouter();
+  const [currentImageIndex, setCurrentImageIndex] = useState(0);
+  
+  const bannerImages = [
+    '/img/cover.jpg',
+    '/img/cover2.jpg',
+    '/img/cover3.jpg',
+    '/img/cover4.jpg'
+  ];
+
+  const handleBannerClick = () => {
+    setCurrentImageIndex((prevIndex) => (prevIndex + 1) % bannerImages.length);
+  };
+
+  const handleSelectVenueClick = (e: React.MouseEvent) => {
+    e.stopPropagation();
+    router.push('/venue');
+  };
+
   return (
-    <div className="relative h-[500px] w-full overflow-hidden">
+    <div 
+      className="relative h-[500px] w-full overflow-hidden cursor-pointer"
+      onClick={handleBannerClick}
+    >
       <div className="absolute inset-0 z-10">
         <Image
-          src="/img/banner-venue.jpg"
+          src={bannerImages[currentImageIndex]}
           alt="Elegant venue space"
           fill
           priority
@@ -23,6 +49,12 @@ export default function Banner() {
           unforgettable.
         </p>
       </div>
+      <button
+        onClick={handleSelectVenueClick}
+        className="absolute bottom-6 right-6 z-40 bg-[#161616] hover:bg-[#262626] text-white font-semibold px-6 py-3 rounded-lg shadow-lg transition-all duration-300 hover:scale-105"
+      >
+        Select Venue
+      </button>
     </div>
   );
 }

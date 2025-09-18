@@ -1,7 +1,9 @@
 'use client';
 
 import { useReducer } from 'react';
-import Card from './Card';
+import Link from 'next/link';
+import VenueCard from './Card';
+import { venuesArray } from '@/data/venues';
 
 type RatingMap = Map<string, number>;
 
@@ -26,13 +28,11 @@ function ratingsReducer(state: RatingMap, action: RatingAction): RatingMap {
   }
 }
 
-const initialRatings: RatingMap = new Map([
-  ['The Bloom Pavilion', 0],
-  ['Spark Space', 0],
-  ['The Grand Table', 0],
-]);
+const initialRatings: RatingMap = new Map(
+  venuesArray.map(venue => [venue.venueName, 0])
+);
 
-export default function CardPanel() {
+export default function VenueCardPanel() {
   const [ratings, dispatch] = useReducer(ratingsReducer, initialRatings);
 
   const handleRatingChange = (venueName: string, rating: number | null) => {
@@ -53,30 +53,20 @@ export default function CardPanel() {
   return (
     <div className="w-full">
       <div className="flex flex-wrap justify-center gap-8">
-        <div className="w-[360px] sm:w-[380px] max-w-full">
-          <Card 
-            venueName="The Bloom Pavilion" 
-            imgSrc="/img/bloom.jpg"
-            rating={ratings.get('The Bloom Pavilion') || 0}
-            onRatingChange={(rating) => handleRatingChange('The Bloom Pavilion', rating)}
-          />
-        </div>
-        <div className="w-[360px] sm:w-[380px] max-w-full">
-          <Card 
-            venueName="Spark Space" 
-            imgSrc="/img/sparkspace.jpg"
-            rating={ratings.get('Spark Space') || 0}
-            onRatingChange={(rating) => handleRatingChange('Spark Space', rating)}
-          />
-        </div>
-        <div className="w-[360px] sm:w-[380px] max-w-full">
-          <Card 
-            venueName="The Grand Table" 
-            imgSrc="/img/grandtable.jpg"
-            rating={ratings.get('The Grand Table') || 0}
-            onRatingChange={(rating) => handleRatingChange('The Grand Table', rating)}
-          />
-        </div>
+        {venuesArray.map((venue) => (
+          <Link
+            key={venue.vid}
+            href={`/venue/${venue.vid}`}
+            className="w-[360px] sm:w-[380px] max-w-full"
+          >
+            <VenueCard
+              venueName={venue.venueName}
+              imgSrc={venue.imgSrc}
+              rating={ratings.get(venue.venueName) || 0}
+              onRatingChange={(rating) => handleRatingChange(venue.venueName, rating)}
+            />
+          </Link>
+        ))}
       </div>
 
       <div className="mt-12 max-w-4xl mx-auto">

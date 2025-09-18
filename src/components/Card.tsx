@@ -4,14 +4,19 @@ import Image from "next/image";
 import InteractiveCard from "./InteractiveCard";
 import { Rating } from '@mui/material';
 
-interface CardProps {
+interface VenueCardProps {
   venueName: string;
   imgSrc: string;
   rating?: number;
   onRatingChange?: (rating: number | null) => void;
 }
 
-export default function Card({ venueName, imgSrc, rating = 0, onRatingChange }: CardProps) {
+export default function VenueCard({ venueName, imgSrc, rating = 0, onRatingChange }: VenueCardProps) {
+  const handleRatingClick = (e: React.MouseEvent) => {
+    e.preventDefault();
+    e.stopPropagation();
+  };
+
   return (
     <InteractiveCard>
       <div className="rounded-xl overflow-hidden max-w-md w-full transform transition duration-300">
@@ -30,7 +35,7 @@ export default function Card({ venueName, imgSrc, rating = 0, onRatingChange }: 
           <p className="text-gray-600 dark:text-gray-400 text-[0.95rem] leading-relaxed mb-4">
             Experience luxury and elegance at our exceptional venue.
           </p>
-          <div className="mb-4">
+          <div className="mb-4" onClick={handleRatingClick}>
             <Rating
               id={`${venueName} Rating`}
               name={`${venueName} Rating`}
@@ -53,7 +58,7 @@ export default function Card({ venueName, imgSrc, rating = 0, onRatingChange }: 
             />
           </div>
           
-          <button className="w-full bg-indigo-500 hover:bg-purple-600 active:scale-95 text-white font-semibold py-3 px-6 rounded-lg text-base transition duration-300">
+          <button className="w-full bg-[#161616] hover:bg-[#262626] active:scale-95 text-white font-semibold py-3 px-6 rounded-lg text-base transition duration-300">
             View Details
           </button>
         </div>
